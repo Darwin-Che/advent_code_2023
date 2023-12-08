@@ -1,6 +1,5 @@
 use std::collections::HashMap;
 
-// use advent_code_2023::d1::*;
 use advent_code_2023::helper::*;
 
 fn hmap_gen() -> HashMap<&'static str, u32> {
