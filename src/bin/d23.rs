@@ -65,7 +65,7 @@ fn get_longest_path(graph: &Graph, start_pos: Node, end_pos: Node) -> Path {
                 let mut pp = p.clone();
                 pp.insert(next_node, p.len());
                 if next_node == end_pos {
-                    println!("Pushing to Candidates len = {} path = {:?}", pp.len(), pp);
+                    println!("Pushing to Candidates len = {}", pp.len());
                     candidates.push(pp);
                 } else {
                     q.push_front(pp);
