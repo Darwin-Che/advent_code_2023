@@ -1,5 +1,6 @@
 use num::{CheckedMul, Integer};
 use std::cmp::{Ordering, Reverse};
+use std::collections::btree_set::Union;
 use std::collections::{BTreeMap, BinaryHeap};
 use std::fs::File;
 use std::io::{prelude::*, BufReader};
@@ -71,4 +72,46 @@ where
     }
 
     ans
+}
+
+#[derive(Debug, Clone)]
+pub struct UnionFind {
+    data: Vec<usize>,
+    size: Vec<u32>,
+}
+
+impl UnionFind {
+    pub fn new(n: usize) -> UnionFind {
+        let data = (0..n).collect();
+        let size = vec![1; n];
+        UnionFind { data, size }
+    }
+
+    pub fn root(&mut self, mut e: usize) -> usize {
+        while self.data[e] != e {
+            let x = self.data[e];
+            self.data[e] = self.data[x];
+            e = x;
+        }
+        e
+    }
+
+    pub fn union(&mut self, mut a: usize, mut b: usize) -> usize {
+        a = self.root(a);
+        b = self.root(b);
+        // if self.size[a] >= self.size[b] {
+        self.data[b] = a;
+        self.size[a] += self.size[b];
+        a
+        // } else {
+        //     self.data[a] = b;
+        //     self.size[b] += self.size[a];
+        //     b
+        // }
+    }
+
+    pub fn size(&mut self, mut a: usize) -> u32 {
+        a = self.root(a);
+        self.size[a]
+    }
 }
