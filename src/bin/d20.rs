@@ -196,22 +196,45 @@ fn main_d20p2() {
 
     let mut cnt = 0;
 
-    loop {
+    /*
+    &rs -> rx
+
+    &dl -> rs
+    &fr -> rs
+    &rv -> rs
+    &bt -> rs
+    */
+
+    for _ in 0..10000 {
         let mut pulse_queue = PulseQueue::new();
         pulse_queue.push_back(("button".to_string(), "broadcaster".to_string(), false));
 
         cnt += 1;
-        println!("Button Cnt = {:?}", cnt);
+        // println!("Button Cnt = {:?}", cnt);
 
         while let Some(pulse) = pulse_queue.pop_front() {
             let next_pulses = process(pulse, &mut state);
             for next_pulse in next_pulses {
-                if next_pulse.1 == "rx" && !next_pulse.2 {
-                    exit(0);
+                let (src, dest, signal) = &next_pulse;
+                if ["dl", "fr", "rv", "bt"].contains(&&src[..]) && *signal {
+                    println!("{src} is true at {cnt}");
                 }
                 pulse_queue.push_back(next_pulse);
             }
         }
+
+        // for x in ["dl", "fr", "rv", "bt"] {
+        //     match state.1.get(x).unwrap() {
+        //         Device::C(c) => {
+        //             if c.iter().all(|(k, v)| !*v) {
+        //                 println!("{x} is false at {cnt}");
+        //             }
+        //         }
+        //         _ => {
+        //             panic!()
+        //         }
+        //     }
+        // }
     }
 }
 
